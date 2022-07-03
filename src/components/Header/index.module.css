@@ -1,0 +1,15 @@
+.header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.menu {
+  padding: 60px 20px;
+  display: flex;
+}
+
+.menuButton {
+  cursor: pointer;
+}
