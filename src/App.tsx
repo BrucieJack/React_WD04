@@ -1,5 +1,6 @@
 import "./App.css";
 import { Login } from "./pages/Login";
+import { Registration } from "./pages/Registration";
 
 // import { Button } from "./components/Button";
 // import { User } from "./components/User/User";
@@ -16,7 +17,7 @@ function App() {
       {/* <Button text="2" disabled={true} type={"secondary"} /> */}
       {/* <User username="Jack Sparrow" /> */}
       {/* <List /> */}
-      <Login />
+      <Registration />
     </div>
   );
 }
