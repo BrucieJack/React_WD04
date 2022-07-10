@@ -1,32 +1,26 @@
-import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import "./App.css";
 import { Login } from "./pages/Login";
-import { Registration } from "./pages/Registration";
-import { Button } from "./components/Button";
-import { User } from "./components/User/User";
-import { Header } from "./components/Header/Header";
-import { EmojiContainer } from "./components/Emojies/EmojiContainer";
-import { ListPosts } from "./components/PostsList/PostsList";
-import { List } from "./components/List/List";
-import { FullPost } from "./pages/FullPost";
-import { createContext, useState } from "react";
 
-export const Context = createContext<{
-  isDark: boolean;
-  setIsDark: (isDark: boolean) => void;
-}>({
-  isDark: false,
-  setIsDark: (value: boolean) => {},
-});
+import { EmojiContainer } from "./components/Emojies/EmojiContainer";
+
+import { Header } from "./components/Header/Header";
+import { ListPosts } from "./components/PostsList/PostsList";
+import { FullPost } from "./pages/FullPost";
+import { ThemeProvider } from "./context/ThemeContext";
+import { Registration } from "./pages/Registration";
+import { Activation } from "./pages/Activation";
+import { PostsProvider } from "./context/PostsContext";
 
 function App() {
-  const [isDark, setIsDark] = useState(true);
   return (
-    <Context.Provider value={{ isDark, setIsDark }}>
-      <div className="App">
-        <Router />
-      </div>
-    </Context.Provider>
+    <PostsProvider>
+      <ThemeProvider>
+        <div className="App">
+          <Router />
+        </div>
+      </ThemeProvider>
+    </PostsProvider>
   );
 }
 
@@ -35,11 +29,18 @@ export const Router = () => {
     <BrowserRouter>
       <Header />
       <Switch>
-        <Route path="/emoji" component={EmojiContainer} />
-        <Route path="/login" component={Login} />
-        <Route path="/registration" component={Registration} />
-        <Route path="/postlist" component={ListPosts} />
-        <Route path="/post/:id" component={FullPost} />
+        <Route path="/" exact={true} component={ListPosts} />
+        <Route path="/emoji" exact={true} component={EmojiContainer} />
+        <Route path="/login" exact={true} component={Login} />
+        <Route path="/post/:id" exact={true} component={FullPost} />
+        <Route path="/registration" exact={true} component={Registration} />
+        <Route
+          path="/registration/success"
+          exact={true}
+          component={() => <h1>Успешно зарегистрирован</h1>}
+        />
+        <Route path="/activate/:uid/:token" exact={true} component={Activation} />
+        <Route component={() => <h1>404</h1>} />
       </Switch>
     </BrowserRouter>
   );
