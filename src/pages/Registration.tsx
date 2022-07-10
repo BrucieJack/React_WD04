@@ -17,7 +17,6 @@ export const Registration = () => {
   };
   return (
     <div>
-      <Header />
       <Title text="Login" />
       <Input
         value={name}

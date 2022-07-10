@@ -1,5 +1,6 @@
 import styles from "./index.module.css";
 import { Post } from "../Post/Post";
+import { useEffect, useState } from "react";
 
 const posts: IProps[] = [
   {
@@ -40,6 +41,24 @@ interface IProps {
 }
 
 export const ListPosts = () => {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const promise = fetch(
+      "https://studapi.teachmeskills.by/blog/posts/?limit=100"
+    );
+
+    promise
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+      .then((data) => {
+        setPosts(data?.results);
+      });
+  }, []);
+
   return (
     <div className={styles.container}>
       {posts.map(({ image, date, text, title }: IProps) => {
