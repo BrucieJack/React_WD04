@@ -1,13 +1,7 @@
+import { IPost } from "../../types/post";
 import styles from "./index.module.css";
 
-interface IProps {
-  image?: string;
-  text: string;
-  date: string;
-  title: string;
-}
-
-export const Post = ({ image, text, date, title }: IProps) => {
+export const Post = ({ image, text, date, title }: IPost) => {
   return (
     <div className={styles.container}>
       <div
