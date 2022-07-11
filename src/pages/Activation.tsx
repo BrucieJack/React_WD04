@@ -1,8 +1,10 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { Context } from "../context/ThemeContext";
 
 export const Activation = () => {
   const params = useParams<{ uid: string; token: string }>();
+  const context = useContext(Context);
 
   useEffect(() => {
     fetch("https://studapi.teachmeskills.by/auth/users/activation/", {
@@ -19,9 +21,11 @@ export const Activation = () => {
   }, []);
 
   return (
-    <h1>
-      Спасибо за регистрацию! Аккаунт успешно зарегистрирован!{params.token}
-      {params.uid}
-    </h1>
+    <div>
+      <h1>
+        Спасибо за регистрацию! Аккаунт успешно зарегистрирован!{params.token}
+        {params.uid}
+      </h1>
+    </div>
   );
 };
