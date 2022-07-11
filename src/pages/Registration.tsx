@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Button } from "../components/Button";
 import { Header } from "../components/Header/Header";
 import { Input } from "../components/Input/Input";
 import { Title } from "../components/Title/Title";
+import { Context } from "../context/ThemeContext";
 
 const _emailRegExp = /(^|\s+)[\w\-.]+@([\w-]+\.)+[\w-]{2,4}($|\s+)/;
 
@@ -14,6 +15,7 @@ export const Registration = () => {
   const [passwordConf, setPasswordConf] = useState("");
   const [error, setError] = useState("");
   const history = useHistory();
+  const context = useContext(Context);
 
   const onClick = () => {
     if (_emailRegExp.test(email) === false) {
@@ -23,13 +25,13 @@ export const Registration = () => {
     }
 
     if (password === "") {
-      setError("Введите пороль");
+      setError("Введите пароль");
     } else {
       setError("");
     }
 
     if (password !== passwordConf) {
-      setError("Пороли не совпадают");
+      setError("Пароли не совпадают");
     } else {
       setError("");
     }
@@ -43,7 +45,11 @@ export const Registration = () => {
     const promise = fetch("https://studapi.teachmeskills.by/auth/users/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: name, email: email, password: password }),
+      body: JSON.stringify({
+        username: name,
+        email: email,
+        password: password,
+      }),
     });
 
     promise
@@ -56,13 +62,15 @@ export const Registration = () => {
           return;
         }
 
-        if (data?.username?.includes("A user with that username already exists.")) {
+        if (
+          data?.username?.includes("A user with that username already exists.")
+        ) {
           setError("Пользователь с таким именем уже существует");
           return;
         }
 
         if (data?.password?.includes("This password is too common.")) {
-          setError("Пороль слишком простой");
+          setError("Пароль слишком простой");
           return;
         }
 
@@ -72,11 +80,30 @@ export const Registration = () => {
       });
   };
   return (
-    <div>
-      <Title text="Login" />
-      <Input value={name} setValue={setName} label={"Name"} placeholder="name" />
-      <Input value={email} setValue={setEmail} label={"Email"} placeholder="email" />
-      <Input value={password} setValue={setPassword} label={"Password"} placeholder="password" />
+    <div
+      style={{
+        backgroundColor: context.isDark ? "#000" : "#fff",
+      }}
+    >
+      <Title text="Registration" />
+      <Input
+        value={name}
+        setValue={setName}
+        label={"Name"}
+        placeholder="name"
+      />
+      <Input
+        value={email}
+        setValue={setEmail}
+        label={"Email"}
+        placeholder="email"
+      />
+      <Input
+        value={password}
+        setValue={setPassword}
+        label={"Password"}
+        placeholder="password"
+      />
       <Input
         value={passwordConf}
         setValue={setPasswordConf}
@@ -84,7 +111,12 @@ export const Registration = () => {
         placeholder="confirm password"
       />
       <p style={{ color: "red" }}>{error}</p>
-      <Button text="Sign Up" onClick={onClick} type="primary" disabled={false} />
+      <Button
+        text="Sign Up"
+        onClick={onClick}
+        type="primary"
+        disabled={false}
+      />
     </div>
   );
 };
